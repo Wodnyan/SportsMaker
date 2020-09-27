@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -69,7 +70,12 @@ export const Login = () => {
             </Link>
           </Grid>
           <Grid item>
-            <Link variant="body2" className={classes.pointer}>
+            <Link
+              component={RouterLink}
+              to="/auth/sign-up"
+              variant="body2"
+              className={classes.pointer}
+            >
               Don't have an account? Sign Up!
             </Link>
           </Grid>
@@ -116,7 +122,12 @@ export const SignUp = () => {
             </Link>
           </Grid>
           <Grid item>
-            <Link variant="body2" className={classes.pointer}>
+            <Link
+              component={RouterLink}
+              to="/auth/login"
+              variant="body2"
+              className={classes.pointer}
+            >
               Already have an account? Log In!
             </Link>
           </Grid>
