@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -8,6 +8,7 @@ import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Form from "../components/AuthForm";
 
 const useStyles = makeStyles({
   container: {
@@ -35,33 +36,34 @@ const Copyright = () => {
 
 export const Login = () => {
   const classes = useStyles();
+  const [inputs, setInputs] = useState({
+    password: "",
+    email: "",
+  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.persist();
+    setInputs((prev) => {
+      return {
+        ...prev,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(inputs);
+  };
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography component="h1" variant="h3" align="center">
         Login
       </Typography>
-      <form noValidate>
-        <TextField
-          margin="normal"
-          variant="outlined"
-          label="E-mail"
-          autoComplete="email"
-          fullWidth
-          required
-        />
-        <TextField
-          margin="normal"
-          variant="outlined"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          required
-          fullWidth
-        />
-        <Button type="submit" variant="contained" fullWidth>
-          Login
-        </Button>
-      </form>
+      <Form
+        handleChange={handleChange}
+        inputValues={inputs}
+        buttonText="login"
+        handleSubmit={handleSubmit}
+      />
       <Box m={2}>
         <Grid container>
           <Grid item xs>
@@ -87,33 +89,34 @@ export const Login = () => {
 };
 export const SignUp = () => {
   const classes = useStyles();
+  const [inputs, setInputs] = useState({
+    password: "",
+    email: "",
+  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.persist();
+    setInputs((prev) => {
+      return {
+        ...prev,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(inputs);
+  };
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography component="h1" variant="h3" align="center">
         Sign Up
       </Typography>
-      <form noValidate>
-        <TextField
-          margin="normal"
-          variant="outlined"
-          label="E-mail"
-          autoComplete="email"
-          fullWidth
-          required
-        />
-        <TextField
-          margin="normal"
-          variant="outlined"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          required
-          fullWidth
-        />
-        <Button type="submit" variant="contained" fullWidth>
-          Sign Up
-        </Button>
-      </form>
+      <Form
+        handleChange={handleChange}
+        inputValues={inputs}
+        buttonText="login"
+        handleSubmit={handleSubmit}
+      />
       <Box m={2}>
         <Grid container>
           <Grid item xs>
