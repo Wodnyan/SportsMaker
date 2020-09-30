@@ -10,6 +10,15 @@ const addDefaultColumns = (table) => {
   table.datetime("deleted_at");
 };
 
+const references = (table, tableName) => {
+  table
+    .integer(`${tableName}_id`)
+    .unsigned()
+    .references("id")
+    .inTable(tableName)
+    .notNullable();
+};
+
 exports.up = async (knex) => {
   //USER
   await knex.schema.createTable(tableNames.USER, (table) => {
@@ -29,13 +38,12 @@ exports.up = async (knex) => {
     table.string("proficiency", 500).notNullable();
     table.string("location", 500).notNullable();
     table.string("img_url", 2000);
-    table.referneces("");
-    // table.datetime("")
+    references(table, tableNames.USER);
     addDefaultColumns(table);
   });
 };
 
 exports.down = async (knex) => {
-  await knex.schema.dropTable(tableNames.USER);
   await knex.schema.dropTable(tableNames.ENTRIES);
+  await knex.schema.dropTable(tableNames.USER);
 };
