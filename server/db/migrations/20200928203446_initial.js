@@ -16,6 +16,7 @@ const references = (table, tableName) => {
     .unsigned()
     .references("id")
     .inTable(tableName)
+    .onDelete("cascade")
     .notNullable();
 };
 
