@@ -11,8 +11,16 @@ export default {
   addNewUser(user: User) {
     return db("user").insert(user);
   },
-  getUserInfo(userId: number) {
+  getUserInfoById(userId: number) {
     return db("user").where({ id: userId }).first();
+  },
+  getUserInfo(user: User) {
+    return db("user").where({ email: user.email }).first();
+  },
+  checkUserCreds(user: User) {
+    return db("user")
+      .where({ email: user.email, password: user.password })
+      .first();
   },
   deleteUser(userId: number) {
     return db("user").where({ id: userId }).del();

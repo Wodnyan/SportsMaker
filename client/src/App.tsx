@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import ListingInfo from "./components/ListingInfo";
 import { Login, SignUp } from "./views/AuthPages";
+import SearchPage from "./views/SearchPage";
 
 function App() {
   return (
@@ -14,8 +14,8 @@ function App() {
           <Route exact path="/auth/sign-up">
             <SignUp />
           </Route>
-          <Route exact path="/">
-            <ListingInfo />
+          <Route exact path="/search">
+            <SearchPage />
           </Route>
         </Switch>
       </Router>
