@@ -6,7 +6,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 import { notFoundHandler, errorHandler } from "./middlewares/middlewares";
 import api from "./routes/api/api";
-import auth from "./routes/auth/auth";
+import auth from "./routes/auth/auth.routes";
 
 dotenv.config();
 
