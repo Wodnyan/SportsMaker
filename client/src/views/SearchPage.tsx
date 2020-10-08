@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import Card from "../components/Card";
 import Filter from "../components/Filter";
 import ListingInfo from "../components/ListingInfo";
@@ -50,7 +50,7 @@ const SearchPage = () => {
             />
           </Grid>
           <Grid item>
-            <ListingInfo />
+            <ListingInfo close={() => console.log("I'm Closing")} />
           </Grid>
         </Grid>
       </div>

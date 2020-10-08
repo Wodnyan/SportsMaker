@@ -8,9 +8,16 @@ import {
   Card,
   CardContent,
   Box,
+  useMediaQuery,
+  Fab,
 } from "@material-ui/core";
+import Close from "@material-ui/icons/Close";
 import { CardImage } from "./Card";
 import Dot from "../components/Dot";
+
+interface Props {
+  close: () => void;
+}
 
 const useStyles = makeStyles({
   root: {
@@ -34,12 +41,30 @@ const useStyles = makeStyles({
     display: "block",
     background: "red",
   },
+  closeButton: {
+    position: "absolute",
+    top: 30,
+    right: 30,
+  },
+  mobile: {
+    width: "80%",
+    height: "70%",
+    overflowY: "auto",
+    position: "fixed",
+    marginTop: 10,
+    padding: "1em",
+    background: "grey",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
 });
 
-const ListingInfo = () => {
+const ListingInfo: React.FC<Props> = ({ close }) => {
   const classes = useStyles();
+  const matches = useMediaQuery("(min-width: 1024px)");
   return (
-    <Paper className={classes.root}>
+    <Paper className={matches ? classes.root : classes.mobile}>
       <Card>
         <CardContent>
           <Grid container>
@@ -48,7 +73,7 @@ const ListingInfo = () => {
             </Grid>
             <Grid item>
               <Typography component="h1" variant="h3">
-                BasketBall
+                This is a Test
               </Typography>
               <Typography>
                 {new Date().toLocaleDateString()}-
@@ -60,6 +85,17 @@ const ListingInfo = () => {
               <Button variant="contained">Save</Button>
             </Grid>
           </Grid>
+          {!matches && (
+            <Fab
+              size="small"
+              aria-label="close"
+              color="secondary"
+              onClick={close}
+              className={classes.closeButton}
+            >
+              <Close />
+            </Fab>
+          )}
         </CardContent>
       </Card>
       <Box>
@@ -121,7 +157,6 @@ const ListingInfo = () => {
           </Grid>
         </Grid>
       </Box>
-      {/* <footer className={classes.footer}></footer */}
     </Paper>
   );
 };
