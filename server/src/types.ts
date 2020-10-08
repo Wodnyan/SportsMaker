@@ -12,4 +12,8 @@ export interface User {
   email: string;
   username: string;
   password: string;
+  last_login: null | Date;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date;
 }
