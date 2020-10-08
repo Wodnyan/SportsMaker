@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Select, MenuItem, InputLabel, FormControl } from "@material-ui/core";
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  useMediaQuery,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   formControl: {
     minWidth: 130,
     marginRight: "20px",
+    marginTop: "10px",
+    marginBottom: "10px",
   },
 });
 
@@ -22,6 +30,7 @@ const Filter = () => {
     typeOfSport: "",
   });
   const classes = useStyles();
+  const matches = useMediaQuery("(min-width: 1024px)");
   const handleChange = (
     e: React.ChangeEvent<{
       name?: string;
