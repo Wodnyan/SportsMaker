@@ -1,4 +1,5 @@
 import React from "react";
+import { makeStyles } from "@material-ui/styles";
 import { TextField, Button } from "@material-ui/core";
 
 interface InputValues {
@@ -13,12 +14,19 @@ interface Props {
   buttonText: string;
 }
 
+const useStyles = makeStyles({
+  input: {
+    display: "block",
+  },
+});
+
 const AuthForm: React.FC<any> = ({
   inputValues,
   buttonText,
   handleChange,
   handleSubmit,
 }) => {
+  const classes = useStyles();
   return (
     <form onSubmit={handleSubmit} noValidate>
       <TextField
@@ -31,6 +39,20 @@ const AuthForm: React.FC<any> = ({
         value={inputValues.email}
         onChange={handleChange}
         name="email"
+        className={classes.input}
+      />
+      <TextField
+        margin="normal"
+        variant="outlined"
+        label="Username"
+        type="text"
+        autoComplete="current-username"
+        required
+        fullWidth
+        value={inputValues.username}
+        onChange={handleChange}
+        name="username"
+        className={classes.input}
       />
       <TextField
         margin="normal"
@@ -43,6 +65,7 @@ const AuthForm: React.FC<any> = ({
         value={inputValues.password}
         onChange={handleChange}
         name="password"
+        className={classes.input}
       />
       <Button type="submit" variant="contained" fullWidth>
         {buttonText}
