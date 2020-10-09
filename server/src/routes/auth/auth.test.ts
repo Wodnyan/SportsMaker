@@ -2,15 +2,15 @@ import supertest from "supertest";
 import app from "../../app";
 
 const testUser = {
-  emai: "foo@bvadfar.com",
-  username: "foo",
-  password: "bar",
+  email: "test@test.com",
+  username: "test",
+  password: "test",
 };
 
-describe("POST /auth", () => {
-  it("should respond with the created user", async () => {
+describe("POST /auth/register", () => {
+  it("should respond with a message", async () => {
     const response = await supertest(app)
-      .post("/auth")
+      .post("/auth/register")
       .send(testUser)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
@@ -19,12 +19,18 @@ describe("POST /auth", () => {
   });
 });
 
-describe("GET /auth/3", () => {
-  it("should respond with a user", async () => {
+describe("POST /auth/login", () => {
+  it("should respond with the user", async () => {
     const response = await supertest(app)
-      .get("/auth/3")
+      .post("/auth/login")
+      .send(testUser)
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
-    expect(response.body.user.username).toEqual("foo");
+    expect(response.body.user).toMatchObject({
+      id: 1,
+      username: testUser.username,
+      email: testUser.email,
+    });
   });
 });
