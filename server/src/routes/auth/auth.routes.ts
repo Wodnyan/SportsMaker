@@ -14,6 +14,13 @@ router.post("/register", async (req, res, next) => {
       message: "Created a User",
     });
   } catch (err) {
+    if (
+      (err.message = `insert into \"user\" (\"email\", \"password\", \"username\") values ($1, $2, $3) - duplicate key value violates unique constraint \"user_email_unique\"`)
+    ) {
+      const error = new Error("Email is Already in Use");
+      res.status(409);
+      next(error);
+    }
     next(err);
   }
 });
@@ -21,19 +28,31 @@ router.post("/login", async (req, res, next) => {
   try {
     const user: User = req.body;
     const queriedUser: User = await query.getUserInfo(user);
-    bcrypt.compare(user.password, queriedUser.password, (err, result) => {
-      if (err) {
-        next(err);
-      } else if (!result) {
-        const error = new Error("Incorrect Password");
-        res.status(401);
-        next(error);
-      } else {
-        res.json({
-          message: "Successful Authentication",
-        });
-      }
-    });
+    console.log(queriedUser);
+    if (queriedUser === undefined) {
+      const error = new Error("User Not Found");
+      res.status(404);
+      next(error);
+    } else {
+      bcrypt.compare(user.password, queriedUser.password, (err, result) => {
+        if (err) {
+          next(err);
+        } else if (!result) {
+          const error = new Error("Incorrect Password");
+          res.status(401);
+          next(error);
+        } else {
+          res.json({
+            message: "Successful Authentication",
+            user: {
+              id: queriedUser.id,
+              username: queriedUser.username,
+              email: queriedUser.email,
+            },
+          });
+        }
+      });
+    }
   } catch (err) {
     next(err);
   }
