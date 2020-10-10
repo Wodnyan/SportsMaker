@@ -10,6 +10,7 @@ router.post("/register", async (req, res, next) => {
     const user = req.body;
     user.password = await bcrypt.hash(user.password, 10);
     const insertNewUser = await query.addNewUser(user);
+    res.status(201);
     res.json({
       message: "Created a User",
     });
@@ -28,7 +29,6 @@ router.post("/login", async (req, res, next) => {
   try {
     const user: User = req.body;
     const queriedUser: User = await query.getUserInfo(user);
-    console.log(queriedUser);
     if (queriedUser === undefined) {
       const error = new Error("User Not Found");
       res.status(404);
@@ -59,10 +59,14 @@ router.post("/login", async (req, res, next) => {
 });
 router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
-  const userInfo = await query.getUserInfoById(Number(userId));
-  res.json({
-    userInfo,
-  });
+  try {
+    const userInfo = await query.getUserInfoById(Number(userId));
+    res.json({
+      userInfo,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 router.delete("/:userId", async (req, res, next) => {
   const { userId } = req.params;
@@ -73,12 +77,19 @@ router.delete("/:userId", async (req, res, next) => {
 });
 router.patch("/:userId", async (req, res, next) => {
   const { userId } = req.params;
-  const update = req.body;
+  const update: User = req.body;
+  if (Object.keys(update).includes("password")) {
+    update.password = await bcrypt.hash(update.password, 10);
+  }
   try {
     const updated = await query.updateUser(Number(userId), update);
     res.json({
       message: `Updated user with the id of ${userId}`,
-      updated,
+      updated: {
+        id: updated.id,
+        username: updated.username,
+        email: updated.email,
+      },
     });
   } catch (err) {
     next(err);
