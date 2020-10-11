@@ -4,8 +4,20 @@ export interface User {
   email: string;
 }
 
+export type Proficiencies = "beginner" | "intermediate" | "pro" | "";
+export type TypeOfSport = "outdoors" | "indoors" | "";
+
+export interface Entry {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  imgUrl: string;
+  proficiency: Proficiencies;
+}
+
 export interface Filters {
-  experience: "beginner" | "intermediate" | "pro" | "";
+  experience: Proficiencies;
   sortBy: "relevance" | "recent";
-  typeOfSport: "outdoors" | "indoors" | "";
+  typeOfSport: TypeOfSport;
 }
