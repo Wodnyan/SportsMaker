@@ -25,7 +25,8 @@ export default {
   deleteUser(userId: number) {
     return db("user").where({ id: userId }).del();
   },
-  updateUser(userId: number, update: Update) {
-    return db("user").where({ id: userId }).update(update);
+  async updateUser(userId: number, update: Update) {
+    await db("user").where({ id: userId }).update(update);
+    return this.getUserInfoById(userId);
   },
 };

@@ -7,6 +7,9 @@ import {
   FormControl,
   useMediaQuery,
 } from "@material-ui/core";
+import { Filters } from "../types";
+import { connect, useDispatch } from "react-redux";
+import { addFilter } from "../redux/actions/filter"
 
 const useStyles = makeStyles({
   formControl: {
@@ -17,18 +20,13 @@ const useStyles = makeStyles({
   },
 });
 
-interface Filters {
-  experience: string;
-  sortBy: string;
-  typeOfSport: string;
+interface Props {
+  filters: Filters
 }
 
-const Filter = () => {
-  const [filter, setFilter] = useState<Filters>({
-    experience: "",
-    sortBy: "relevant",
-    typeOfSport: "",
-  });
+const Filter: React.FC<Props> = ({filters}) => {
+  // const [filter, setFilter] = useState<Filters>(filters);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const matches = useMediaQuery("(min-width: 1024px)");
   const handleChange = (
@@ -37,20 +35,18 @@ const Filter = () => {
       value: unknown;
     }>
   ) => {
-    setFilter((prev) => ({
-      ...prev,
-      [e.target.name as string]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    dispatch(addFilter(value, name));
   };
   return (
-    <div>
+    <>
       <FormControl className={classes.formControl} variant="filled">
         <InputLabel id="experience-label">Experience</InputLabel>
         <Select
           labelId="experience-label"
           id="experience-label-select"
           name="experience"
-          value={filter.experience}
+          value={filters.experience}
           onChange={handleChange}
         >
           <MenuItem value={""}>
@@ -58,7 +54,7 @@ const Filter = () => {
           </MenuItem>
           <MenuItem value={"beginner"}>Beginner</MenuItem>
           <MenuItem value={"intermediate"}>Intermediate</MenuItem>
-          <MenuItem value={"pro"}>Pro</MenuItem>
+          <MenuItem value={"pro"}>Professional</MenuItem>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl} variant="filled">
@@ -67,10 +63,10 @@ const Filter = () => {
           labelId="sortBy-label"
           id="sortBy-label-select"
           name="sortBy"
-          value={filter.sortBy}
+          value={filters.sortBy}
           onChange={handleChange}
         >
-          <MenuItem value={"relevant"}>Most Relevant</MenuItem>
+          <MenuItem value={"relevance"}>Most Relevant</MenuItem>
           <MenuItem value={"recent"}>Most Recent</MenuItem>
         </Select>
       </FormControl>
@@ -80,7 +76,7 @@ const Filter = () => {
           labelId="typeOfSport-label"
           id="typeOfSport-label-select"
           name="typeOfSport"
-          value={filter.typeOfSport}
+          value={filters.typeOfSport}
           onChange={handleChange}
         >
           <MenuItem value={""}>
@@ -90,7 +86,16 @@ const Filter = () => {
           <MenuItem value={"outdoors"}>Outdoors</MenuItem>
         </Select>
       </FormControl>
-    </div>
+    </>
   );
 };
-export default Filter;
+const mapStateToProps = (state: any) => ({ 
+  filters: state.filters
+});
+// export default Filter;
+export default connect(
+  mapStateToProps,
+  {
+    addFilter,
+  }
+)(Filter);
