@@ -5,10 +5,10 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Form from "../components/AuthForm";
+import { LoginForm, SignUpForm } from "../components/AuthForms";
+import axios from "axios";
+import { API_ENDPOINT } from "../constants/apiEndpoint";
 
 const useStyles = makeStyles({
   container: {
@@ -36,33 +36,60 @@ const Copyright = () => {
 
 export const Login = () => {
   const classes = useStyles();
-  const [inputs, setInputs] = useState({
+  const [form, setForm] = useState({
     password: "",
     email: "",
+    username: "",
+    isLoading: false,
+    error: "",
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    setInputs((prev) => {
+    setForm((prev) => {
       return {
         ...prev,
         [event.target.name]: event.target.value,
       };
     });
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputs);
+    const requestBody = {
+      username: form.username,
+      password: form.password,
+      email: form.email,
+    };
+    try {
+      setForm((prev) => ({
+        ...prev,
+        isLoading: true,
+      }));
+      const response = await axios.post(
+        `${API_ENDPOINT}/auth/login`,
+        requestBody
+      );
+      setForm((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
+      console.log(response);
+    } catch (err) {
+      setForm((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
+    }
   };
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography component="h1" variant="h3" align="center">
         Login
       </Typography>
-      <Form
+      <LoginForm
         handleChange={handleChange}
-        inputValues={inputs}
-        buttonText="login"
+        inputValues={form}
         handleSubmit={handleSubmit}
+        isLoading={form.isLoading}
       />
       <Box m={2}>
         <Grid container>
@@ -92,6 +119,7 @@ export const SignUp = () => {
   const [inputs, setInputs] = useState({
     password: "",
     email: "",
+    username: "",
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -102,20 +130,28 @@ export const SignUp = () => {
       };
     });
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputs);
+    const requestBody = {
+      username: inputs.username,
+      password: inputs.password,
+      email: inputs.email,
+    };
+    const response = await axios.post(
+      `${API_ENDPOINT}/auth/register`,
+      requestBody
+    );
   };
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography component="h1" variant="h3" align="center">
         Sign Up
       </Typography>
-      <Form
+      <SignUpForm
         handleChange={handleChange}
         inputValues={inputs}
-        buttonText="login"
         handleSubmit={handleSubmit}
+        isLoading={false}
       />
       <Box m={2}>
         <Grid container>
