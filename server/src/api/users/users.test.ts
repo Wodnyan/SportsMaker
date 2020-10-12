@@ -19,6 +19,12 @@ describe("POST /api/v1/users/register", () => {
   });
 });
 
+describe("GET /api/v1/users", () => {
+  it("should respond with the users", async () => {
+    const response = await supertest(app).get("/api/v1/users").expect(200);
+    expect(response.body.length).toBeGreaterThan(0);
+  });
+});
 describe("POST /api/v1/users/login", () => {
   it("should respond with the user", async () => {
     const response = await supertest(app)
@@ -36,10 +42,10 @@ describe("POST /api/v1/users/login", () => {
   });
 });
 
-describe("PATCH /api/v1/users", () => {
+describe("PATCH /api/v1/users/1", () => {
   it("should respond with a message containing the user id and with the updated user", async () => {
     const response = await supertest(app)
-      .patch("/api/v1/users")
+      .patch("/api/v1/users/1")
       .send({ username: "updated", email: "updated@updated.com" })
       .expect("Content-Type", /json/)
       .expect(200);
