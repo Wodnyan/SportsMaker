@@ -5,8 +5,7 @@ import cors from "cors";
 import passport from "passport";
 import dotenv from "dotenv";
 import { notFoundHandler, errorHandler } from "./middlewares/middlewares";
-import api from "./routes/api/api";
-import auth from "./routes/auth/auth.routes";
+import api from "./api/api";
 
 dotenv.config();
 
@@ -19,7 +18,6 @@ app.use(morgan("common"));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/api/v1", api);
-app.use("/auth", auth);
 
 app.use(notFoundHandler);
 //Error handler

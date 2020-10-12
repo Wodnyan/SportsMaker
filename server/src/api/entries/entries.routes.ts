@@ -42,11 +42,14 @@ router.get("/:entryId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
+    console.log(req.body);
     const entries = await query.insert(req.body);
+    res.status(201);
     res.json({
       message: "New Entry",
     });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });

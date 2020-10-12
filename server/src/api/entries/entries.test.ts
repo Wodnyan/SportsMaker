@@ -1,6 +1,6 @@
 import supertest from "supertest";
-import app from "../../../app";
-import { Entry } from "../../../types";
+import app from "../../app";
+import { Entry } from "../../types";
 
 const testEntry = {
   title: "Basketball",
@@ -26,7 +26,9 @@ describe("POST /api/v1/entries", () => {
     const response = await supertest(app)
       .post("/api/v1/entries")
       .send(testEntry)
-      .expect(200);
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(201);
     expect(response.body.message).toEqual("New Entry");
   });
 });
