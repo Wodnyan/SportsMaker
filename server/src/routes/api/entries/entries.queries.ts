@@ -11,4 +11,7 @@ export default {
   insert(entry: Entry) {
     return db("entries").insert(entry);
   },
+  deleteEntry(id: number) {
+    return db("entries").where({ id }).del();
+  },
 };
