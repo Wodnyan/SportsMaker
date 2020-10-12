@@ -7,10 +7,10 @@ const testUser = {
   password: "test",
 };
 
-describe("POST /auth/register", () => {
+describe("POST /api/v1/users/register", () => {
   it("should respond with a message", async () => {
     const response = await supertest(app)
-      .post("/auth/register")
+      .post("/api/v1/users/register")
       .send(testUser)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
@@ -19,10 +19,10 @@ describe("POST /auth/register", () => {
   });
 });
 
-describe("POST /auth/login", () => {
+describe("POST /api/v1/users/login", () => {
   it("should respond with the user", async () => {
     const response = await supertest(app)
-      .post("/auth/login")
+      .post("/api/v1/users/login")
       .send(testUser)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
@@ -36,10 +36,10 @@ describe("POST /auth/login", () => {
   });
 });
 
-describe("PATCH /auth/1", () => {
+describe("PATCH /api/v1/users", () => {
   it("should respond with a message containing the user id and with the updated user", async () => {
     const response = await supertest(app)
-      .patch("/auth/1")
+      .patch("/api/v1/users")
       .send({ username: "updated", email: "updated@updated.com" })
       .expect("Content-Type", /json/)
       .expect(200);
@@ -52,10 +52,10 @@ describe("PATCH /auth/1", () => {
   });
 });
 
-describe("DELETE /auth/1", () => {
+describe("DELETE /api/v1/users/1", () => {
   it("should respond with a message containing the user id", async () => {
     const response = await supertest(app)
-      .delete("/auth/1")
+      .delete("/api/v1/users/1")
       .expect("Content-Type", /json/)
       .expect(200);
     expect(response.body.message).toEqual("Deleted user with the id of 1");

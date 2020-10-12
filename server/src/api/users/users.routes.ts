@@ -1,7 +1,8 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
-import query from "./auth.queries";
-import { User } from "../../types";
+import query from "./users.queries";
+import { User as UserType } from "../../types";
+import User from "./users.model";
 
 const router = Router();
 
@@ -27,8 +28,8 @@ router.post("/register", async (req, res, next) => {
 });
 router.post("/login", async (req, res, next) => {
   try {
-    const user: User = req.body;
-    const queriedUser: User = await query.getUserInfo(user);
+    const user: UserType = req.body;
+    const queriedUser: UserType = await query.getUserInfo(user);
     if (queriedUser === undefined) {
       const error = new Error("User Not Found");
       res.status(404);
@@ -77,7 +78,7 @@ router.delete("/:userId", async (req, res, next) => {
 });
 router.patch("/:userId", async (req, res, next) => {
   const { userId } = req.params;
-  const update: User = req.body;
+  const update: UserType = req.body;
   if (Object.keys(update).includes("password")) {
     update.password = await bcrypt.hash(update.password, 10);
   }
@@ -95,4 +96,12 @@ router.patch("/:userId", async (req, res, next) => {
     next(err);
   }
 });
+
+router.get("/", async (req, res, next) => {
+  const users = await User.query();
+  res.json({
+    users,
+  });
+});
+
 export default router;

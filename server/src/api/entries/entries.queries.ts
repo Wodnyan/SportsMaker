@@ -1,5 +1,5 @@
-import db from "../../../db";
-import { Entry, User } from "../../../types";
+import db from "../../db";
+import { Entry, User } from "../../types";
 
 export default {
   find() {
