@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app from "../../app";
+import app from "../app";
 
 describe("GET /api/v1", () => {
   it("should respond with a message", async () => {
