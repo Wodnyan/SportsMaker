@@ -7,38 +7,10 @@ const testUser = {
   password: "test",
 };
 
-describe("POST /api/v1/users/register", () => {
-  it("should respond with a message", async () => {
-    const response = await supertest(app)
-      .post("/api/v1/users/register")
-      .send(testUser)
-      .set("Accept", "application/json")
-      .expect("Content-Type", /json/)
-      .expect(201);
-    expect(response.body.message).toEqual("Created a User");
-  });
-});
-
 describe("GET /api/v1/users", () => {
   it("should respond with the users", async () => {
     const response = await supertest(app).get("/api/v1/users").expect(200);
-    expect(response.body.length).toBeGreaterThan(0);
-  });
-});
-describe("POST /api/v1/users/login", () => {
-  it("should respond with the user", async () => {
-    const response = await supertest(app)
-      .post("/api/v1/users/login")
-      .send(testUser)
-      .set("Accept", "application/json")
-      .expect("Content-Type", /json/)
-      .expect(200);
-    expect(response.body.user).toMatchObject({
-      id: 1,
-      username: testUser.username,
-      email: testUser.email,
-    });
-    expect(response.body.message).toEqual("Successful Authentication");
+    expect(response.body.users.length).toBeGreaterThanOrEqual(0);
   });
 });
 
