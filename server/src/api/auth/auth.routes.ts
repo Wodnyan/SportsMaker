@@ -2,6 +2,7 @@ import { Router } from "express";
 import User from "../users/users.model";
 import bcrypt from "bcrypt";
 const yup = require("yup"); // For some reason can't import it with typescript, it returns undefined
+import { sign } from "../../lib/jwt";
 
 const router = Router();
 
@@ -43,13 +44,16 @@ router.post("/signup", async (req, res, next) => {
       username,
       password: hashedPassword,
     });
-    res.json({
+    const payload = {
+      id: insertedUser.id,
+      username: insertedUser.username,
+      email: insertedUser.email,
+    };
+    const token = await sign(payload);
+    res.status(201).json({
       message: "Successful Sign Up",
-      user: {
-        id: insertedUser.id,
-        username: insertedUser.username,
-        email: insertedUser.email,
-      },
+      user: payload,
+      token,
     });
   } catch (error) {
     if (error.name === "ValidationError") {

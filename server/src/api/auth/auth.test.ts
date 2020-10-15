@@ -4,18 +4,18 @@ import supertest from "supertest";
 const testUser = {
   email: "test@test.com",
   username: "test",
-  password: "test",
+  password: "Test123!",
 };
 
-describe("POST /api/v1/users/signup", () => {
+describe("POST /api/v1/auth/signup", () => {
   it("should respond with a message", async () => {
     const response = await supertest(app)
-      .post("/api/v1/users/signup")
+      .post("/api/v1/auth/signup")
       .send(testUser)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(201);
-    expect(response.body.message).toEqual("Created a User");
+    expect(response.body.message).toEqual("Successful Sign Up");
   });
   it("should respond with 409 error if email is already in use", async () => {
     const response = await supertest(app)
